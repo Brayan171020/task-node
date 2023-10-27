@@ -49,7 +49,7 @@ function registerPage() {
             {errors.password && (<p className="text-red-500">Password is required</p>)}
 
             <button type="submit">
-                Register
+                Register 
             </button>
         </form>
         <p className="flex gap-x-2 justify-between"> 
