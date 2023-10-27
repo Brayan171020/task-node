@@ -4,10 +4,11 @@ import { useForm } from "react-hook-form";
 import { useAuth } from "../context/AuthContext";
 import { useEffect } from "react";
 import {useNavigate} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 function registerPage() {
 
-    const {register, handleSubmit, formState: { errors},} =  useForm()
+    const {register, handleSubmit, formState: { errors},} =  useForm();
     const {signup, isAuthenticated, errors: registerErrors} = useAuth();
     const navigation = useNavigate();
 
@@ -25,7 +26,7 @@ function registerPage() {
     <div className="bg-zinc-800 max-w-md p-10 rounded-md">
         {
             registerErrors.map( (error, i) => (
-                <div className="bg-red-500 p-2 text-white" key={i}>
+                <div className="bg-red-500 p-2 text-white my-2" key={i}>
                     {error}
                 </div>
             ))
@@ -51,7 +52,9 @@ function registerPage() {
                 Register
             </button>
         </form>
-
+        <p className="flex gap-x-2 justify-between"> 
+          Alredy have an account? {" "} <Link to="/login" className="text-sky-500 "> Login</Link>
+        </p>
     </div>
   )
 }
