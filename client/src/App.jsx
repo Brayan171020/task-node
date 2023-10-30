@@ -12,7 +12,7 @@ import ProtectedRoute from "./ProtectedRoute";
 import { TasksProvider } from "./context/TasksContext";
 import NavBar from "./components/NavBar";
 
-function App() {
+function App()  {
   return (
     <AuthProvider>
       <TasksProvider>
