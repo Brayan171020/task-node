@@ -10,7 +10,7 @@ dayjs.extend(utc);
 function TasksFormPage() {
 
   const { register, handleSubmit, setValue } = useForm();
-  const { createTask, getTask, updateTask } = useTasks();
+  const { createTask, getTask, updateTask, errors: completedErrors, isTitle, logouTask } = useTasks();
   const navigate = useNavigate();
   const params = useParams();
 
@@ -33,26 +33,38 @@ function TasksFormPage() {
       ...data,
       date: data.date ? dayjs.utc(data.date).format() : dayjs.utc().format(),
     }
-
+    console.log(dataValid);
     if (params.id) {
       updateTask(params.id, dataValid);
     } else {
       createTask(dataValid);
     }
-    navigate('/tasks');
+    
   })
+
+  useEffect(() => {
+    if (isTitle) navigate("/tasks")
+    logouTask();
+}, [isTitle]);
 
   return (
     <div className="flex h-[calc(100vh-100px)] items-center justify-center">
       <div className="bg-zinc-800 max-w-md w-full p-10 rounded-md">
+        {
+          completedErrors.map((error, i) => (
+            <div className="bg-red-500 p-2 text-white my-2" key={i}>
+              {error}
+            </div>
+          ))
+        }
         <form onSubmit={onSubmit}>
-          <label htmlFor="title">title</label>
+          <label htmlFor="Title">Title</label>
 
           <input type="text" placeholder="Title"
             {...register('title')} autoFocus
             className="w-full bg-zinc-700 text-white px-4 py-2 rounded-md my-2" />
 
-          <label htmlFor="description">description</label>
+          <label htmlFor="Description">Description</label>
           <textarea rows="3" placeholder="Description"
             {...register('description')}
             className="w-full bg-zinc-700 text-white px-4 py-2 rounded-md my-2"></textarea>
@@ -62,7 +74,7 @@ function TasksFormPage() {
           <input type="date" {...register('date')}
             className="w-full bg-zinc-700 text-white px-4 py-2 rounded-md my-2" />
 
-          <button className="bg-indigo-500 px-3 py-2 rounded-md">
+          <button className="bg-indigo-500 px-3 py-2 rounded-md" >
             Save
           </button>
         </form>

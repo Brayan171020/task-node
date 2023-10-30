@@ -18,7 +18,7 @@ export const createTask = async (req,res) => {
         const savedTask = await newTask.save();
         res.json(savedTask);
     } catch (error) {
-        return res.status(500).json({message: 'Something goes wrong'});
+        return res.status(500).json({message: 'Title is required'});
     }
 
 }

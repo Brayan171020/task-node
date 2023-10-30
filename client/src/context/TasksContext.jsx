@@ -1,4 +1,6 @@
-import { createContext, useState, useContext } from "react";
+/* eslint-disable react/prop-types */
+/* eslint-disable no-empty */
+import { createContext, useState, useContext, useEffect } from "react";
 import {
     createTasksRequest,
     getTaskRequest,
@@ -20,6 +22,8 @@ export const useTasks = () => {
 export function TasksProvider({ children }) {
 
     const [tasks, setTasks] = useState([]);
+    const [errors, setErrors] = useState([]);
+    const [isTitle, setTitle] = useState(false);
 
     const getTasks = async () => {
         try {
@@ -33,10 +37,29 @@ export function TasksProvider({ children }) {
     const createTask = async (task) => {
         try {
             const res = await createTasksRequest(task);
+            console.log(res);
+            setTitle(true);
         } catch (error) {
-            console.log(error)
+            console.log(error);
+            if (Array.isArray(error.response.data)) {
+                return setErrors(error.response.data);
+            }
+            setErrors([error.response.data.message]);
         }
     };
+
+    const logouTask = () => {
+        setTitle(false);
+    }
+
+    useEffect(() => {
+        if (errors.length > 0) {
+            const timer = setTimeout(() => {
+                setErrors([])
+            }, 5000);
+            return () => clearTimeout(timer);
+        }
+    }, [errors]);
 
     const deleteTask = async (id) => {
         try {
@@ -59,6 +82,7 @@ export function TasksProvider({ children }) {
     const updateTask = async (id, task) => {
         try {
             const res = await updateTasksRequest(id, task);
+            setTitle(true);
             return res.data;
         } catch (error) {
             console.log(error)
@@ -66,7 +90,10 @@ export function TasksProvider({ children }) {
     };
 
     return (
-        <TasksContext.Provider value={{ tasks, createTask, getTasks, deleteTask, getTask, updateTask }}>
+        <TasksContext.Provider value={{
+            tasks, errors, createTask, logouTask,
+            getTasks, deleteTask, getTask, updateTask, isTitle
+        }}>
             {children}
         </TasksContext.Provider>
     )
