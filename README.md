@@ -1,4 +1,4 @@
-#Task Manager
+# Task Manager
 <p align="center"> <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/1280px-React-icon.svg.png" width="100" height="100"> <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Node.js_logo.svg/1200px-Node.js_logo.svg.png" width="100" height="100"> </p>
 Instalación local
 
